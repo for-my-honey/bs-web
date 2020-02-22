@@ -1,0 +1,29 @@
+.loginForm {
+    max-width: 300px;
+}
+
+.loginFormForgot {
+    float: right;
+}
+
+.loginFormButton {
+    width: 100%;
+}
+
+.bg {
+    background: url('../../img/loginbg.jpg');
+    /* opacity: 0.8; */
+}
+
+.ant-carousel .slick-slide {
+    text-align: center;
+    height: 160px;
+    line-height: 160px;
+    /* background: #364d79; */
+    overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+    font-size: 38px;
+    color: #fff;
+}
