@@ -1,12 +1,13 @@
 import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
-import { Link, Redirect } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { renderRoutes } from 'react-router-config'
+import MyHeader from './components/layout/header'
 import './App.css';
 // import Dashboard from './components/dashboard';
 // import User from './components/user';
 // import RouterIndex from './route/index';
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 class App extends React.Component {
@@ -15,7 +16,6 @@ class App extends React.Component {
     this.state = {
       route: props.route,
       collapsed: false,
-
     }
   }
 
@@ -30,14 +30,14 @@ class App extends React.Component {
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
           <div className='logo' />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1">
+          <Menu theme="dark" defaultSelectedKeys={window.location.hash.split('/')[2]} mode="inline">
+            <Menu.Item key="dashboard">
               <Link to='/app/dashboard'>
                 <Icon type="pie-chart" />
                 首页
                 </Link>
             </Menu.Item>
-            <Menu.Item key="2" >
+            <Menu.Item key="user" >
               <Link to='/app/user'>
                 <Icon type="user" />
                 用户管理
@@ -76,7 +76,7 @@ class App extends React.Component {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }} />
+          <MyHeader></MyHeader>
           <Content style={{
             margin: '24px 16px',
             padding: 24,
@@ -85,7 +85,7 @@ class App extends React.Component {
           }}>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               {renderRoutes(route.children)}
-              <Redirect exact from="/app" to='/app/dashboard' />
+              {/* <Redirect exact from="/app" to='/dashboard' /> */}
               {/* 这里用 redirect 进行 首页自动跳转到 /home 路由下 
                 exact 意味着精确匹配 当为 / 时才跳转 /home 不是包含 / 就跳转到 /home
             */}
@@ -100,4 +100,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);

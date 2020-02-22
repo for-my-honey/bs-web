@@ -1,8 +1,9 @@
 import React from 'react';
 import { Table, Input, Switch, message } from 'antd';
 import './index.css'
+import LocalizedModal from '../model/LocalizedModal';
 // import columns from './user.config'
-import { query, updateSwitch } from '../../services/user';
+import { query, updateSwitch, select, deleat } from '../../services/user';
 
 const { Search } = Input;
 
@@ -12,7 +13,8 @@ class User extends React.Component {
     this.columns = [
       {
         title: '序号',
-        dataIndex: 'id',
+        dataIndex: '',
+        render: (text, record, index) => `${index + 1}`
       },
       {
         title: '账户',
@@ -41,15 +43,28 @@ class User extends React.Component {
           return <Switch onChange={() => this.handleStatus(text, record)} defaultChecked={false} />
         },
       },
+      {
+        title: '操作',
+        dataIndex: '',
+        render: (text, record) => {
+          console.log(text, record.usernum);
+          return (
+            <div>
+              <LocalizedModal record={record} />
+            </div>
+
+          )
+        },
+      },
     ];
     this.state = {
       selectedRowKeys: [],
       list: [],
-      flag: '', // Check here to configure the default column
+      visible: false, // Check here to configure the default column
     };
   };
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     query().then((res) => {
       console.log(res.data);
       this.setState({
@@ -57,11 +72,24 @@ class User extends React.Component {
       })
     })
   }
+  onDeleat(record) {
+    const param = record.id;
+    console.log(record);
+    deleat(param).then((res) => {
+      console.log(res);
+    })
+  }
+  onSearch(value) {
+    console.log(value);
+    select(value).then((res) => {
+      console.log(res);
 
-  // onChange = (checked) => {
-  //   checked = !checked;
-  //   console.log(`switch to ${checked}`);
-  // }
+      this.setState({
+        list: res.data
+      })
+    })
+  }
+
   handleStatus = (text, record) => {
     if (text === 'true') {
       const flag = !Boolean(record.TF);
@@ -87,52 +115,12 @@ class User extends React.Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
       hideDefaultSelections: true,
-      selections: [
-        {
-          key: 'all-data',
-          text: 'Select All Data',
-          onSelect: () => {
-            this.setState({
-              selectedRowKeys: [...Array(46).keys()], // 0...45
-            });
-          },
-        },
-        {
-          key: 'odd',
-          text: 'Select Odd Row',
-          onSelect: changableRowKeys => {
-            let newSelectedRowKeys = [];
-            newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-              if (index % 2 !== 0) {
-                return false;
-              }
-              return true;
-            });
-            this.setState({ selectedRowKeys: newSelectedRowKeys });
-          },
-        },
-        {
-          key: 'even',
-          text: 'Select Even Row',
-          onSelect: changableRowKeys => {
-            let newSelectedRowKeys = [];
-            newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-              if (index % 2 !== 0) {
-                return true;
-              }
-              return false;
-            });
-            this.setState({ selectedRowKeys: newSelectedRowKeys });
-          },
-        },
-      ],
     };
     return (
       <div>
-        <Search placeholder="请输入账户关键字" onSearch={value => console.log(value)} enterButton style={{ width: 400, marginBottom: '20px' }} />
-        <Table rowSelection={rowSelection} columns={this.columns} dataSource={this.state.list} rowKey='id' />
+        <Search placeholder="请输入账户关键字" onSearch={(value) => this.onSearch(value)} enterButton style={{ width: 400, marginBottom: '3px' }} />
+        <Table rowSelection={rowSelection} columns={this.columns} dataSource={this.state.list} rowKey='id' pagination={{ pageSize: 5 }} />
       </div>
-
     )
   }
 };

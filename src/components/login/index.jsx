@@ -21,7 +21,7 @@ class NormalLoginForm extends React.Component {
             }
             if (data.data === '2') {
               message.success('登录成功')
-              this.props.history.push('/app');
+              this.props.history.push('/app/dashboard');
             }
           }
         }));

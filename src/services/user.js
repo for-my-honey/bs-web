@@ -7,3 +7,9 @@ export async function query() {
 export async function updateSwitch(params, flag) {
   return axios.get(`${userquery}/updateStatus?usernum=${params.usernum}&TF=${flag}`);
 }
+export async function select(params) {
+  return axios.get(`${userquery}/select?usernum=${params}`);
+}
+export async function deleat(params) {
+  return axios.get(`${userquery}/deleat?id=${params}`);
+}

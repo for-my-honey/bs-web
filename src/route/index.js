@@ -3,8 +3,7 @@ import User from '../components/user';
 import Login from '../components/login';
 import App from '../App';
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     component: Login,
     exact: true,
@@ -12,8 +11,7 @@ const routes = [
   {
     path: '/app',
     component: App,
-    children: [
-      {
+    children: [{
         path: '/app/dashboard',
         component: Dashboard
       },
