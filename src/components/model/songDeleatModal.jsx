@@ -1,10 +1,9 @@
 import { Modal, Button, message } from 'antd';
 import React from 'react';
-
-import { deleat } from '../../services/user';
+import { deleat } from '../../services/song';
 const { confirm } = Modal;
 
-class LocalizedModal extends React.Component {
+class songDeleatModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,4 +43,4 @@ class LocalizedModal extends React.Component {
   }
 }
 
-export default LocalizedModal;
+export default songDeleatModal;

@@ -4,9 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import { renderRoutes } from 'react-router-config'
 import MyHeader from './components/layout/header'
 import './App.css';
-// import Dashboard from './components/dashboard';
-// import User from './components/user';
-// import RouterIndex from './route/index';
+
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -21,7 +19,6 @@ class App extends React.Component {
 
 
   onCollapse = collapsed => {
-    console.log(collapsed);
     this.setState({ collapsed });
   };
   render() {
@@ -49,29 +46,56 @@ class App extends React.Component {
               title={
                 <span>
                   <Icon type="desktop" />
-                  <span>User</span>
+                  <span>歌曲管理</span>
                 </span>
               }
             >
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
+              <Menu.Item key="searchsong">
+                <Link to='/app/searchsong'>
+                  <Icon type="edit" />
+                  编辑歌曲
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="uploadsong">
+                <Link to='/app/uploadsong'>
+                  <Icon type="plus-circle" />
+                  增加歌曲
+                </Link>
+              </Menu.Item>
+              {/* <Menu.Item key="updatesong">
+                <Link to='/app/updatesong'>
+                  <Icon type="edit" />
+                  修改歌曲
+                </Link>
+              </Menu.Item> */}
             </SubMenu>
             <SubMenu
               key="sub2"
               title={
                 <span>
                   <Icon type="team" />
-                  <span>Team</span>
+                  <span>歌手管理</span>
                 </span>
               }
             >
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
+              <Menu.Item key="searchsinger">
+                <Link to='/app/searchsinger'>
+                  <Icon type="edit" />
+                  编辑歌手
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="updatesinger">
+                <Link to='/app/updatesinger'>
+                  <Icon type="plus-circle" />
+                  增加歌手
+                </Link>
+              </Menu.Item>
             </SubMenu>
-            <Menu.Item key="9">
-              <Icon type="file" />
-              <span>File</span>
+            <Menu.Item key="list">
+              <Link to='/app/list'>
+                <Icon type="bar-chart" />
+                榜单
+                </Link>
             </Menu.Item>
           </Menu>
         </Sider>

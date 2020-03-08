@@ -21,6 +21,7 @@ class NormalLoginForm extends React.Component {
             }
             if (data.data === '2') {
               message.success('登录成功')
+              sessionStorage.setItem("name", `${values.username}`);
               this.props.history.push('/app/dashboard');
             }
           }

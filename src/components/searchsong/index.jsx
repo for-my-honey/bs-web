@@ -1,13 +1,13 @@
 import React from 'react';
-import { Table, Input, Switch, message } from 'antd';
-import './index.css'
-
-import LocalizedModal from '../model/LocalizedModal';
-import { query, updateSwitch, select, deleat } from '../../services/user';
-
+import { Table, Input, Switch, message, Button, Divider } from 'antd';
+import './index.css';
+import { query, select, deleat } from '../../services/song';
+import { formateDate } from '../../utils/dateUtils';
+import SongDeleatModal from '../model/songDeleatModal';
+import SongModal from '../model/songModal';
 const { Search } = Input;
 
-class User extends React.Component {
+class Searchsong extends React.Component {
   constructor(props) {
     super(props);
     this.columns = [
@@ -18,40 +18,35 @@ class User extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
-        title: '账户',
-        dataIndex: 'usernum',
+        title: '歌曲名称',
+        dataIndex: 'songname',
         align: 'center',
       },
       {
-        title: 'ID',
-        dataIndex: 'id',
+        title: '专辑',
+        dataIndex: 'songcd',
         align: 'center',
       },
       {
-        title: '用户密码',
-        dataIndex: 'userpassword',
+        title: '歌曲类型',
+        dataIndex: 'songtype',
         align: 'center',
       },
       {
-        title: '邮箱',
-        dataIndex: 'useremail',
+        title: '歌手',
+        dataIndex: 'singer',
         align: 'center',
       },
       {
-        title: '注册时间',
-        dataIndex: 'usertime',
+        title: '地区',
+        dataIndex: 'songarea',
         align: 'center',
       },
       {
-        title: '是否可用',
-        dataIndex: 'TF',
+        title: '发布时间',
+        dataIndex: 'songdate',
         align: 'center',
-        render: (text, record) => {
-          if (text === 'true') {
-            return <Switch onChange={() => this.handleStatus(text, record)} defaultChecked={true} />
-          }
-          return <Switch onChange={() => this.handleStatus(text, record)} defaultChecked={false} />
-        },
+        render: (text) => `${formateDate(text)}`.substr(0, 10)
       },
       {
         title: '操作',
@@ -59,9 +54,11 @@ class User extends React.Component {
         align: 'center',
         render: (text, record) => {
           return (
-            <div>
-              <LocalizedModal record={record} />
-            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <SongModal record={record} />
+              <Divider type="vertical"></Divider>
+              <SongDeleatModal record={record} />
+            </ div>
           )
         },
       },
@@ -77,34 +74,28 @@ class User extends React.Component {
   componentDidMount() {
     this.setState({ loading: true });
     query().then((res) => {
+      console.log(res);
       this.setState({
         list: res.data,
         loading: false,
       })
     })
   }
+
   onDeleat(record) {
     const param = record.id;
     deleat(param).then((res) => {
     })
   }
+
   onSearch(value) {
+    console.log(value);
+
     select(value).then((res) => {
       this.setState({
         list: res.data
       })
     })
-  }
-
-  handleStatus = (text, record) => {
-    if (text === 'true') {
-      const flag = !Boolean(record.TF);
-      updateSwitch(record, flag);
-    } else {
-      const flag = Boolean(record.TF);
-      updateSwitch(record, flag);
-    }
-    message.success('修改状态成功！')
   }
 
   onSelectChange = selectedRowKeys => {
@@ -120,10 +111,10 @@ class User extends React.Component {
     };
     return (
       <div>
-        <Search placeholder="请输入账户关键字" onSearch={(value) => this.onSearch(value)} enterButton style={{ width: 400, marginBottom: '3px' }} />
+        <Search placeholder="请输入歌曲名称" onSearch={(value) => this.onSearch(value)} enterButton style={{ width: 400, marginBottom: '3px' }} />
         <Table rowSelection={rowSelection} columns={this.columns} dataSource={this.state.list} rowKey='id' pagination={{ pageSize: 5 }} loading={this.state.loading} />
       </div>
     )
   }
 };
-export default User;
+export default Searchsong;

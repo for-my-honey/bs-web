@@ -10,4 +10,5 @@ const devHost = `${PROTOCOL}://${IP}:${PORT}`;
 export default {
   loginPass: `${devHost}/login`,
   userquery: `${devHost}/user`,
+  songquery: `${devHost}/song`,
 }
