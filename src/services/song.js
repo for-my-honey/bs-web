@@ -6,6 +6,9 @@ const songquery = api.songquery;
 export async function query() {
   return axios.get(`${songquery}`);
 }
+export async function queryList() {
+  return axios.get(`${songquery}/songList`);
+}
 
 export async function select(params) {
   return axios.get(`${songquery}/select?songname=${params}`);

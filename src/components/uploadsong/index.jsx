@@ -3,6 +3,7 @@ import './index.css';
 import { Upload, message, Modal, Card, Button, Form, Select, DatePicker, Icon, Progress, Table, Input, Col, Row } from 'antd';
 import { add } from '../../services/song';
 import { formateDate } from '../../utils/dateUtils';
+const { Dragger } = Upload;
 var moment = require('moment');
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
@@ -47,7 +48,13 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
           const params = { ...values, upload: this.state.url }
           add(params).then((res) => {
             console.log(res);
+            if (res.status === 200) {
+              message.success('提交成功');
 
+            }
+            else {
+              message.error('提交失败');
+            }
           })
           console.log('Received values of form: ', params);
         }
@@ -70,12 +77,14 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               <Col span={12}>
                 <Form.Item label="歌曲名称：" {...formItemLayout}>
                   {getFieldDecorator('songname', {
+                    rules: [{ required: true, message: '请输入歌曲名称' }],
                   })(<Input />)}
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item label="专辑：" {...formItemLayout}>
                   {getFieldDecorator('songcd', {
+                    rules: [{ required: true, message: '请输入专辑名称' }],
                   })(<Input />)}
                 </Form.Item>
               </Col>
@@ -84,6 +93,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               <Col span={12}>
                 <Form.Item label="歌曲类型：" {...formItemLayout}>
                   {getFieldDecorator('songtype', {
+                    rules: [{ required: true, message: '请选择歌曲类型' }],
                   })(
                     <Select>
                       <Select.Option value="流行">流行</Select.Option>
@@ -98,6 +108,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               <Col span={12}>
                 <Form.Item label="歌手：" {...formItemLayout}>
                   {getFieldDecorator('singer', {
+                    rules: [{ required: true, message: '请输入歌手名' }],
                   })(<Input />)}
                 </Form.Item>
               </Col>
@@ -106,6 +117,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               <Col span={12}>
                 <Form.Item label="地区：" {...formItemLayout}>
                   {getFieldDecorator('songarea', {
+                    rules: [{ required: true, message: '请选择地区' }],
                   })(
                     <Select>
                       <Select.Option value="内地">内地</Select.Option>
@@ -120,6 +132,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               <Col span={12}>
                 <Form.Item label="发布时间：" {...formItemLayout}>
                   {getFieldDecorator('songdate', {
+                    rules: [{ required: true, message: '请选择发布时间' }],
                   })(<DatePicker />)}
                 </Form.Item>
               </Col>
@@ -128,13 +141,15 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               <Col span={12}>
                 <Form.Item label="上传文件：" {...formItemLayout}>
                   {getFieldDecorator('upload', {
+                    rules: [{ required: true, message: '请上传歌曲文件' }],
                   })(
                     <div>
-                      <Upload {...this.aprops}>
-                        <Button>
-                          <Icon type="upload" /> 点击上传歌曲
-                      </Button>
-                      </Upload>
+                      <Dragger {...this.aprops}>
+                        <p className="ant-upload-drag-icon">
+                          <Icon type="inbox" />
+                        </p>
+                        <p className="ant-upload-text">点击或者拖拽文件到此处上传</p>
+                      </Dragger>
                     </div>
                   )}
                 </Form.Item>

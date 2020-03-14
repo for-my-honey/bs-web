@@ -50,6 +50,7 @@ class App extends React.Component {
                 </span>
               }
             >
+
               <Menu.Item key="searchsong">
                 <Link to='/app/searchsong'>
                   <Icon type="edit" />
@@ -69,6 +70,12 @@ class App extends React.Component {
                 </Link>
               </Menu.Item> */}
             </SubMenu>
+            <Menu.Item key="songList">
+              <Link to='/app/songList'>
+                <Icon type="ordered-list" />
+                歌曲展示
+                </Link>
+            </Menu.Item>
             <SubMenu
               key="sub2"
               title={
@@ -91,10 +98,11 @@ class App extends React.Component {
                 </Link>
               </Menu.Item>
             </SubMenu>
-            <Menu.Item key="list">
-              <Link to='/app/list'>
-                <Icon type="bar-chart" />
-                榜单
+
+            <Menu.Item key="singerList">
+              <Link to='/app/singerList'>
+                <Icon type="ordered-list" />
+                歌手列表
                 </Link>
             </Menu.Item>
           </Menu>
@@ -105,9 +113,9 @@ class App extends React.Component {
             margin: '24px 16px',
             padding: 24,
             background: '#fff',
-            minHeight: 280,
+            // minHeight: 280,
           }}>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+            <div style={{ padding: 16, background: '#fff' }}>
               {renderRoutes(route.children)}
               {/* <Redirect exact from="/app" to='/dashboard' /> */}
               {/* 这里用 redirect 进行 首页自动跳转到 /home 路由下 

@@ -3,7 +3,7 @@ import User from '../components/user';
 import Login from '../components/login';
 import Searchsong from '../components/searchsong';
 import Uploadsong from '../components/uploadsong';
-import Updatesong from '../components/updatesong';
+import SongList from '../components/songList';
 import App from '../App';
 
 const routes = [{
@@ -31,8 +31,8 @@ const routes = [{
         component: Uploadsong
       },
       {
-        path: '/app/updatesong',
-        component: Updatesong
+        path: '/app/songList',
+        component: SongList
       }
     ]
   },
