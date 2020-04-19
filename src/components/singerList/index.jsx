@@ -1,10 +1,9 @@
 import React from 'react';
 import './index.css'
-import { Card, Col, Row, Icon, Modal, Form, Input, message, Upload } from 'antd';
+import { Card, Col, Row, Icon, Modal, Form, message, Upload, InputNumber } from 'antd';
 
-import { queryList, updatelist } from '../../services/song';
+import { queryList, updatelist } from '../../services/singer';
 const { Dragger } = Upload;
-const { TextArea } = Input;
 
 const { Meta } = Card;
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
@@ -38,14 +37,21 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
           onOk={onCreate}
         >
           <Form layout="horizontal">
-            <Form.Item label="图片信息：" {...formItemLayout}>
-              {getFieldDecorator('songdesc', {
-                initialValue: `${msg.songdesc}`
-              })(<TextArea maxLength={20} />)}
+            <Form.Item label="单曲数量：" {...formItemLayout}>
+              {getFieldDecorator('singersongnum', {
+                initialValue: `${msg.singersongnum === null ? 0 : msg.singersongnum}`,
+                rules: [{ required: true, message: '请输入单曲数量' }],
+              })(<InputNumber />)}
+            </Form.Item>
+            <Form.Item label="专辑数量：" {...formItemLayout}>
+              {getFieldDecorator('singercdnum', {
+                initialValue: `${msg.singercdnum === null ? 0 : msg.singercdnum}`,
+                rules: [{ required: true, message: '请输入专辑数量' }],
+              })(<InputNumber />)}
             </Form.Item>
             <Form.Item label="上传图片：" {...formItemLayout}>
               {getFieldDecorator('upload', {
-                initialValue: `${msg.imgurl}`
+                initialValue: `${msg.singerurl}`
               })(
                 <div>
                   <Dragger {...this.aprops}>
@@ -63,7 +69,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
     }
   },
 );
-class SongList extends React.Component {
+class SingerList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,7 +99,8 @@ class SongList extends React.Component {
       if (err) {
         return;
       }
-      const desc = values.songdesc;
+      const singersongnum = values.singersongnum;
+      const singercdnum = values.singercdnum;
       if (values.upload === undefined) {
         imgurl = '';
       }
@@ -104,7 +111,8 @@ class SongList extends React.Component {
         }
         imgurl = values.upload.substr(pos + 1);
       }
-      updatelist(desc, imgurl, id).then((res) => {
+
+      updatelist(singersongnum, singercdnum, imgurl, id).then((res) => {
         if (res.status === 200) {
           form.resetFields();
           message.success('修改成功！')
@@ -141,22 +149,32 @@ class SongList extends React.Component {
                 return (
                   <Col span={4} key={j} onClick={() => this.showModal(item)} >
                     <Card
-                      style={{ width: 190, height: 300 }}
+                      style={{
+                        width: 190,
+                        height: 300,
+                      }}
+                      bodyStyle={{
+                        maxHeight: 120,
+                        display: 'box',
+                        boxOrient: 'vertical',
+                        lineClamp: 3,
+                        overflow: 'hidden'
+                      }}
                       hoverable
                       // size="small"
                       // bordered={true}
                       cover={
                         <img
                           alt="example"
-                          src={item.imgurl === null ? require('../../songimgs/404.png') : `http://localhost:3001/public/images/${item.imgurl}`}
+                          src={item.singerurl === null || item.singerurl === undefined ? require('../../songimgs/404.png') : `http://localhost:3001/public/images/${item.singerurl}`}
                         />
                       }
 
                     >
                       <Meta
                         // avatar={'dad'}
-                        title={item.songname}
-                        description={item.songdesc}
+                        title={item.singername}
+                        description={<Row><Col span={12}><Icon type="customer-service" />单曲{item.singersongnum}</Col><Col span={12} style={{ textAlign: 'right' }}><Icon type="play-circle" />专辑{item.singercdnum}</Col></Row>}
                       />
                     </Card>
                   </Col>
@@ -177,4 +195,4 @@ class SongList extends React.Component {
     )
   }
 };
-export default SongList;
+export default SingerList;

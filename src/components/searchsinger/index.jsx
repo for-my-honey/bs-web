@@ -1,13 +1,13 @@
 import React from 'react';
-import { Table, Input, Divider, Icon } from 'antd';
+import { Table, Input, Tooltip, Divider } from 'antd';
 import './index.css';
-import { query, select, deleat } from '../../services/song';
+import { query, select, deleat } from '../../services/singer';
 import { formateDate } from '../../utils/dateUtils';
-import SongDeleatModal from '../model/songDeleatModal';
-import SongModal from '../model/songModal';
+import SingerDeleatModal from '../model/SingerDeleatModal';
+import SingerModal from '../model/singerModal';
 const { Search } = Input;
 
-class Searchsong extends React.Component {
+class Searchsinger extends React.Component {
   constructor(props) {
     super(props);
     this.columns = [
@@ -18,47 +18,47 @@ class Searchsong extends React.Component {
         render: (text, record, index) => `${index + 1}`
       },
       {
-        title: '歌曲名称',
-        dataIndex: 'songname',
+        title: '歌手名称',
+        dataIndex: 'singername',
         align: 'center',
       },
       {
-        title: '专辑',
-        dataIndex: 'songcd',
+        title: '性别',
+        dataIndex: 'singersex',
         align: 'center',
       },
       {
-        title: '歌曲类型',
-        dataIndex: 'songtype',
-        align: 'center',
-      },
-      {
-        title: '歌手',
-        dataIndex: 'singer',
-        align: 'center',
-      },
-      {
-        title: '地区',
-        dataIndex: 'songarea',
-        align: 'center',
-      },
-      {
-        title: '发布时间',
-        dataIndex: 'songdate',
+        title: '出生日期',
+        dataIndex: 'singerday',
         align: 'center',
         render: (text) => `${formateDate(text)}`.replace('0:0:0', '')
       },
       {
-        title: '播放',
-        dataIndex: '',
+        title: '代表作',
+        dataIndex: 'singersymbol',
         align: 'center',
-        render: (text, record) => <a href={`http://localhost:3001/public/mp3/${record.songurl}`}><Icon type="step-forward" style={{ fontSize: '18px' }} /></a>
       },
       {
-        title: '下载',
-        dataIndex: '',
+        title: '地区',
+        dataIndex: 'singerarea',
         align: 'center',
-        render: (text, record) => <a href={`http://localhost:3001/download?songurl=${record.songurl}`}><Icon type="vertical-align-bottom" style={{ fontSize: '18px' }} /></a>
+      },
+      {
+        title: '简介',
+        dataIndex: 'singerdesc',
+        align: 'center',
+        onCell: () => {
+          return {
+            style: {
+              maxWidth: 150,
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              cursor: 'pointer'
+            }
+          }
+        },
+        render: (text) => <Tooltip placement="topLeft" title={text}>{text}</Tooltip>
       },
       {
         title: '操作',
@@ -67,14 +67,13 @@ class Searchsong extends React.Component {
         render: (text, record) => {
           return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <SongModal record={record} />
+              <SingerModal record={record} />
               <Divider type="vertical"></Divider>
-              <SongDeleatModal record={record} />
+              <SingerDeleatModal record={record} />
             </ div>
           )
         },
       },
-
     ];
     this.state = {
       selectedRowKeys: [],
@@ -121,10 +120,10 @@ class Searchsong extends React.Component {
     // };
     return (
       <div>
-        <Search placeholder="请输入歌曲名称" onSearch={(value) => this.onSearch(value)} enterButton style={{ width: 400, marginBottom: '3px' }} />
+        <Search placeholder="请输入歌手名称" onSearch={(value) => this.onSearch(value)} enterButton style={{ width: 400, marginBottom: '3px' }} />
         <Table columns={this.columns} dataSource={this.state.list} rowKey='id' pagination={{ pageSize: 5 }} loading={this.state.loading} />
       </div>
     )
   }
 };
-export default Searchsong;
+export default Searchsinger;

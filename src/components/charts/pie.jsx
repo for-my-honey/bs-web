@@ -1,17 +1,38 @@
-import React, { Component } from 'react'
-import { Card } from 'antd'
-import ReactEcharts from 'echarts-for-react'
-
+import React, { Component } from 'react';
+import { Col, Row, } from 'antd';
+import ReactEcharts from 'echarts-for-react';
+import { usernum, usersex } from '../../services/dashboard';
 /*
 后台管理的饼图路由组件
  */
-export default class Pie extends Component {
 
+export default class Pie extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      datasex: [],
+    };
+  };
+
+  componentDidMount() {
+    usernum().then((res) => {
+      this.setState({
+        data: res.data,
+      })
+    })
+    usersex().then((res) => {
+      this.setState({
+        datasex: res.data,
+      })
+    })
+  }
   getOption = () => {
+    const num = this.state.data;
     return {
       title: {
-        text: '某站点用户访问来源',
-        subtext: '纯属虚构',
+        text: '音乐平台用户年龄分布',
+        // subtext: '纯属虚构',
         x: 'center'
       },
       tooltip: {
@@ -21,20 +42,20 @@ export default class Pie extends Component {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+        data: ['0~12岁', '13~18岁', '19~29岁', '30~45岁', '45岁以上']
       },
       series: [
         {
-          name: '访问来源',
+          name: '年龄分布',
           type: 'pie',
           radius: '55%',
           center: ['50%', '60%'],
           data: [
-            { value: 335, name: '直接访问' },
-            { value: 310, name: '邮件营销' },
-            { value: 234, name: '联盟广告' },
-            { value: 135, name: '视频广告' },
-            { value: 1548, name: '搜索引擎' }
+            { value: num.one, name: '0~12岁' },
+            { value: num.two, name: '13~18岁' },
+            { value: num.three, name: '19~29岁' },
+            { value: num.four, name: '30~45岁' },
+            { value: num.three, name: '45岁以上' }
           ],
           itemStyle: {
             emphasis: {
@@ -50,87 +71,53 @@ export default class Pie extends Component {
   }
 
   getOption2 = () => {
+    const sexnum = this.state.datasex;
+
     return {
-      backgroundColor: '#2c343c',
-
       title: {
-        text: 'Customized Pie',
-        left: 'center',
-        top: 20,
-        textStyle: {
-          color: '#ccc'
-        }
+        text: '音乐平台用户性别分布',
+        // subtext: '纯属虚构',
+        x: 'center'
       },
-
       tooltip: {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
       },
-
-      visualMap: {
-        show: false,
-        min: 80,
-        max: 600,
-        inRange: {
-          colorLightness: [0, 1]
-        }
+      legend: {
+        orient: 'vertical',
+        right: 'right',
+        data: ['男', '女']
       },
       series: [
         {
-          name: '访问来源',
+          name: '性别分布',
           type: 'pie',
           radius: '55%',
-          center: ['50%', '50%'],
+          center: ['50%', '60%'],
           data: [
-            { value: 335, name: '直接访问' },
-            { value: 310, name: '邮件营销' },
-            { value: 274, name: '联盟广告' },
-            { value: 235, name: '视频广告' },
-            { value: 400, name: '搜索引擎' }
-          ].sort(function (a, b) { return a.value - b.value; }),
-          roseType: 'radius',
-          label: {
-            normal: {
-              textStyle: {
-                color: 'rgba(255, 255, 255, 0.3)'
-              }
-            }
-          },
-          labelLine: {
-            normal: {
-              lineStyle: {
-                color: 'rgba(255, 255, 255, 0.3)'
-              },
-              smooth: 0.2,
-              length: 10,
-              length2: 20
-            }
-          },
+            { value: sexnum.two, name: '女' },
+            { value: sexnum.one, name: '男' },
+          ],
           itemStyle: {
-            normal: {
-              color: '#c23531',
-              shadowBlur: 200,
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
               shadowColor: 'rgba(0, 0, 0, 0.5)'
             }
-          },
-
-          animationType: 'scale',
-          animationEasing: 'elasticOut',
-          animationDelay: function (idx) {
-            return Math.random() * 200;
           }
         }
       ]
     };
+
   }
 
   render() {
     return (
       <div>
-        <ReactEcharts option={this.getOption()} style={{ height: 350 }} />
-        {/* <Card title='饼图二'>
-          <ReactEcharts option={this.getOption2()} style={{ height: 300 }} />
-        </Card> */}
+        <Row>
+          <Col span={12}><ReactEcharts option={this.getOption()} style={{ height: 380 }} /></Col>
+          <Col span={12}><ReactEcharts option={this.getOption2()} style={{ height: 380 }} /></Col>
+        </Row>
       </div>
     )
   }

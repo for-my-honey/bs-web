@@ -28,7 +28,6 @@ const columns = [
     title: '是否可用',
     dataIndex: 'using',
     render: (text, record) => {
-      console.log(text, record.usernum);
       if (text === 'true') {
         return <Switch onChange={onChange} defaultChecked={true} />
       }

@@ -1,9 +1,9 @@
 import { Modal, Button, message } from 'antd';
 import React from 'react';
-import { deleat } from '../../services/song';
+import { deleat } from '../../services/singer';
 const { confirm } = Modal;
 
-class songDeleatModal extends React.Component {
+class singerDeleatModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,9 +18,12 @@ class songDeleatModal extends React.Component {
       okType: 'danger',
       cancelText: '取消',
       onOk() {
-        deleat(param).then((res) => {
+        deleat(param).then((res, err) => {
           if (res.status === 200) {
             message.success('删除成功！')
+          }
+          else {
+            message.error(err)
           }
           window.location.reload();
         })
@@ -34,6 +37,7 @@ class songDeleatModal extends React.Component {
   render() {
     const record = this.props.record;
     const param = record.id;
+
     return (
       <Button onClick={() => this.showDeleteConfirm(param)} type="danger">
         删除
@@ -42,4 +46,4 @@ class songDeleatModal extends React.Component {
   }
 }
 
-export default songDeleatModal;
+export default singerDeleatModal;

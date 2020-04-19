@@ -11,4 +11,6 @@ export default {
   loginPass: `${devHost}/login`,
   userquery: `${devHost}/user`,
   songquery: `${devHost}/song`,
+  singerquery: `${devHost}/singer`,
+  dashboard: `${devHost}/dashboard`,
 }

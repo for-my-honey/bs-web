@@ -23,11 +23,6 @@ class User extends React.Component {
         align: 'center',
       },
       {
-        title: 'ID',
-        dataIndex: 'id',
-        align: 'center',
-      },
-      {
         title: '用户密码',
         dataIndex: 'userpassword',
         align: 'center',
@@ -35,6 +30,16 @@ class User extends React.Component {
       {
         title: '邮箱',
         dataIndex: 'useremail',
+        align: 'center',
+      },
+      {
+        title: '性别',
+        dataIndex: 'sex',
+        align: 'center',
+      },
+      {
+        title: '年龄',
+        dataIndex: 'age',
         align: 'center',
       },
       {

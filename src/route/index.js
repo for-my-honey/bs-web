@@ -4,6 +4,10 @@ import Login from '../components/login';
 import Searchsong from '../components/searchsong';
 import Uploadsong from '../components/uploadsong';
 import SongList from '../components/songList';
+import Searchsinger from '../components/searchsinger';
+import Updatesinger from '../components/updatesinger';
+import SingerList from '../components/singerList';
+
 import App from '../App';
 
 const routes = [{
@@ -33,9 +37,22 @@ const routes = [{
       {
         path: '/app/songList',
         component: SongList
+      },
+      {
+        path: '/app/searchsinger',
+        component: Searchsinger
+      },
+      {
+        path: '/app/updatesinger',
+        component: Updatesinger
+      },
+      {
+        path: '/app/singerlist',
+        component: SingerList
       }
     ]
   },
+
 ];
 
 export default routes;

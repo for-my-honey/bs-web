@@ -38,3 +38,10 @@ export async function add(params) {
     songurl: params.upload
   });
 }
+export async function updatelist(desc, imgurl, id) {
+  return axios.post(`${songquery}/updatelist`, {
+    id: id,
+    songdesc: desc,
+    upload: imgurl,
+  });
+}

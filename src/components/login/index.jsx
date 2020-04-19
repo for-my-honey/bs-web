@@ -8,9 +8,7 @@ class NormalLoginForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
-        console.log('ssss', query(values).then((data) => {
-          console.log('aaaaa', data);
+        query(values).then((data) => {
           if (data) {
             if (data.data === '0') {
               message.error('账号不存在')
@@ -25,7 +23,7 @@ class NormalLoginForm extends React.Component {
               this.props.history.push('/app/dashboard');
             }
           }
-        }));
+        });
       }
     });
   };

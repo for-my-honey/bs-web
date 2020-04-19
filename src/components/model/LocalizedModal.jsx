@@ -35,11 +35,10 @@ class LocalizedModal extends React.Component {
   render() {
     const record = this.props.record;
     const param = record.id;
-    console.log('gggg', this.props);
     return (
       <Button onClick={() => this.showDeleteConfirm(param)} type="danger">
         删除
-    </Button>
+      </Button>
     );
   }
 }

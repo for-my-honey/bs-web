@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Modal, Form, Input, Select, DatePicker, message } from 'antd';
-import { update } from '../../services/song';
+import { Button, Modal, Radio, Form, Input, Select, DatePicker, message } from 'antd';
+import { update } from '../../services/singer';
+const { TextArea } = Input;
 var moment = require('moment');
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
@@ -28,37 +29,31 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
           onOk={onCreate}
         >
           <Form layout="horizontal">
-            <Form.Item label="歌曲名称：" {...formItemLayout}>
-              {getFieldDecorator('songname', {
-                initialValue: `${record.songname}`
+            <Form.Item label="歌手名称：" {...formItemLayout}>
+              {getFieldDecorator('singername', {
+                rules: [{ required: true, message: '请输入歌手名称' }],
+                initialValue: `${record.singername}`
               })(<Input />)}
             </Form.Item>
-            <Form.Item label="专辑：" {...formItemLayout}>
-              {getFieldDecorator('songcd', {
-                initialValue: `${record.songcd}`
-              })(<Input />)}
-            </Form.Item>
-            <Form.Item label="歌曲类型：" {...formItemLayout}>
-              {getFieldDecorator('songtype', {
-                initialValue: `${record.songtype}`
+            <Form.Item label="性别：" {...formItemLayout}>
+              {getFieldDecorator('singersex', {
+                initialValue: `${record.singersex}`
               })(
-                <Select>
-                  <Select.Option value="流行">流行</Select.Option>
-                  <Select.Option value="民谣">民谣</Select.Option>
-                  <Select.Option value="古典">古典</Select.Option>
-                  <Select.Option value="摇滚">摇滚</Select.Option>
-                  <Select.Option value="嘻哈">嘻哈</Select.Option>
-                </Select>
+                <Radio.Group>
+                  <Radio value={'男'}>男</Radio>
+                  <Radio value={'女'}>女</Radio>
+                </Radio.Group>
               )}
             </Form.Item>
-            <Form.Item label="歌手：" {...formItemLayout}>
-              {getFieldDecorator('singer', {
-                initialValue: `${record.singer}`
-              })(<Input />)}
+            <Form.Item label="出生日期：" {...formItemLayout}>
+              {getFieldDecorator('singerday', {
+                rules: [{ required: true, message: '请选择出生日期' }],
+                initialValue: moment(`${moment(record.singerday).format('YYYY-MM-DD')}`)
+              })(<DatePicker />)}
             </Form.Item>
             <Form.Item label="地区：" {...formItemLayout}>
-              {getFieldDecorator('songarea', {
-                initialValue: `${record.songarea}`
+              {getFieldDecorator('singerarea', {
+                initialValue: `${record.singerarea}`
               })(
                 <Select>
                   <Select.Option value="内地">内地</Select.Option>
@@ -69,10 +64,15 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 </Select>
               )}
             </Form.Item>
-            <Form.Item label="发布时间：" {...formItemLayout}>
-              {getFieldDecorator('songdate', {
-                initialValue: moment(`${moment(record.songdate).format('YYYY-MM-DD')}`)
-              })(<DatePicker />)}
+            <Form.Item label="代表作：" {...formItemLayout}>
+              {getFieldDecorator('singersymbol', {
+                initialValue: `${record.singersymbol}`
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="简介：" {...formItemLayout}>
+              {getFieldDecorator('singerdesc', {
+                initialValue: `${record.singerdesc}`
+              })(<TextArea allowClear />)}
             </Form.Item>
           </Form>
         </Modal>
@@ -103,10 +103,13 @@ class CollectionsPage extends React.Component {
         return;
       }
 
-      // this.setState({ record: values });
-      update(values, id).then((res) => {
+      this.setState({ record: values });
+      update(values, id).then((res, err) => {
         if (res.status === 200) {
           message.success('更新成功！')
+        }
+        else {
+          message.error(err)
         }
       })
       form.resetFields();

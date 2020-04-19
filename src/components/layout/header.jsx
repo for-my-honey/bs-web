@@ -20,7 +20,6 @@ class MyHeader extends React.Component {
       cancelText: '取消',
       // content: 'Some descriptions',
       onOk: () => {
-        console.log(this.props);
         this.props.history.push('/');
       }
     });
@@ -49,7 +48,6 @@ class MyHeader extends React.Component {
     clearInterval(this.intervalId)
   }
   render() {
-    console.log();
 
     return (
       <Header style={{ background: '#fff', padding: 0 }}>

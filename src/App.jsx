@@ -29,13 +29,13 @@ class App extends React.Component {
           <div className='logo' />
           <Menu theme="dark" defaultSelectedKeys={window.location.hash.split('/')[2]} mode="inline">
             <Menu.Item key="dashboard">
-              <Link to='/app/dashboard'>
+              <Link to='/app/dashboard' replace>
                 <Icon type="pie-chart" />
                 首页
                 </Link>
             </Menu.Item>
             <Menu.Item key="user" >
-              <Link to='/app/user'>
+              <Link to='/app/user' replace>
                 <Icon type="user" />
                 用户管理
                 </Link>
@@ -52,13 +52,13 @@ class App extends React.Component {
             >
 
               <Menu.Item key="searchsong">
-                <Link to='/app/searchsong'>
+                <Link to='/app/searchsong' replace>
                   <Icon type="edit" />
                   编辑歌曲
                 </Link>
               </Menu.Item>
               <Menu.Item key="uploadsong">
-                <Link to='/app/uploadsong'>
+                <Link to='/app/uploadsong' replace>
                   <Icon type="plus-circle" />
                   增加歌曲
                 </Link>
@@ -71,7 +71,7 @@ class App extends React.Component {
               </Menu.Item> */}
             </SubMenu>
             <Menu.Item key="songList">
-              <Link to='/app/songList'>
+              <Link to='/app/songList' replace>
                 <Icon type="ordered-list" />
                 歌曲展示
                 </Link>
@@ -86,13 +86,13 @@ class App extends React.Component {
               }
             >
               <Menu.Item key="searchsinger">
-                <Link to='/app/searchsinger'>
+                <Link to='/app/searchsinger' replace>
                   <Icon type="edit" />
                   编辑歌手
                 </Link>
               </Menu.Item>
               <Menu.Item key="updatesinger">
-                <Link to='/app/updatesinger'>
+                <Link to='/app/updatesinger' replace>
                   <Icon type="plus-circle" />
                   增加歌手
                 </Link>
@@ -100,7 +100,7 @@ class App extends React.Component {
             </SubMenu>
 
             <Menu.Item key="singerList">
-              <Link to='/app/singerList'>
+              <Link to='/app/singerList' replace>
                 <Icon type="ordered-list" />
                 歌手列表
                 </Link>

@@ -1,51 +1,90 @@
 import React, { Component } from 'react'
-import { Card, Button } from 'antd'
+
 import ReactEcharts from 'echarts-for-react'
+import { malesinger, femalesinger, singernum } from '../../services/dashboard';
 
 /*
-后台管理的柱状图路由组件
+后台管理的折线图路由组件
  */
-export default class Bar extends Component {
+export default class Line extends Component {
 
   state = {
-    sales: [5, 20, 36, 10, 10, 20], // 销量的数组
-    stores: [6, 10, 25, 20, 15, 10], // 库存的数组
+    male: [], // 销量的数组
+    female: [], // 库存的数组
+    singernum: [],
   }
 
-  update = () => {
-    this.setState(state => ({
-      sales: state.sales.map(sale => sale + 1),
-      stores: state.stores.reduce((pre, store) => {
-        pre.push(store - 1)
-        return pre
-      }, []),
-    }))
+  componentDidMount() {
+    malesinger().then((res) => {
+      const datatype = Object.values(res.data[0]);
+      this.setState({
+        male: datatype,
+      })
+    })
+    femalesinger().then((res) => {
+      const datatype = Object.values(res.data[0]);
+      this.setState({
+        female: datatype,
+      })
+    })
+    singernum().then((res) => {
+      const datatype = Object.values(res.data[0]);
+      this.setState({
+        singernum: datatype,
+      })
+    })
   }
-
   /*
-  返回柱状图的配置对象
+  返回折线图路由组件
    */
-  getOption = (sales, stores) => {
+  getOption = () => {
     return {
       title: {
-        text: 'ECharts 入门示例'
+        text: '歌手信息分布'
       },
       tooltip: {},
       legend: {
-        data: ['销量', '库存']
+        data: ['男歌手（Male singer）', '女歌手（Female singer）', '歌手（singer）'],
+        orient: 'vertical',
+        right: 'right',
       },
-      xAxis: {
-        data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+      radar: {
+        // shape: 'circle',
+        name: {
+          textStyle: {
+            color: '#fff',
+            backgroundColor: '#999',
+            borderRadius: 3,
+            padding: [3, 5]
+          }
+        },
+        indicator: [
+          { name: '内地（China）', max: 10 },
+          { name: '港台（Hong Kong and Taiwan）', max: 10 },
+          { name: '韩国（Korea）', max: 10 },
+          { name: '欧美（Europe and America）', max: 10 },
+          { name: '日本（Japan）', max: 10 },
+        ]
       },
-      yAxis: {},
       series: [{
-        name: '销量',
-        type: 'bar',
-        data: sales
-      }, {
-        name: '库存',
-        type: 'bar',
-        data: stores
+        name: '男歌手 vs 女歌手',
+        type: 'radar',
+        // areaStyle: {normal: {}},
+        data: [
+          {
+            value: this.state.female,
+            name: '女歌手（Female singer）'
+          },
+          {
+            value: this.state.male,
+            name: '男歌手（Male singer）'
+          },
+          {
+            value: this.state.singernum,
+            name: '歌手（singer）'
+          },
+
+        ]
       }]
     }
   }
@@ -54,7 +93,7 @@ export default class Bar extends Component {
     const { sales, stores } = this.state
     return (
       <div>
-        <ReactEcharts option={this.getOption(sales, stores)} style={{ height: 350 }} />
+        <ReactEcharts option={this.getOption(sales, stores)} style={{ height: 380 }} />
       </div>
     )
   }

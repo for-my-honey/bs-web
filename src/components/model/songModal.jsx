@@ -15,8 +15,6 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
         wrapperCol: { span: 14 },
       };
       // const { record } = this.state;
-      console.log('state', this.state);
-      console.log(this.props);
 
       const { visible, onCancel, onCreate, form, record } = this.props;
       const { getFieldDecorator } = form;
@@ -100,13 +98,10 @@ class CollectionsPage extends React.Component {
   handleCreate = (id) => {
     const { form } = this.formRef.props;
 
-    console.log(id);
-
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-      console.log('val', values);
 
       // this.setState({ record: values });
       update(values, id).then((res) => {
@@ -125,7 +120,6 @@ class CollectionsPage extends React.Component {
   };
 
   render() {
-    console.log(this.props.record, 'sss');
     const id = this.props.record.id;
     return (
       <div>

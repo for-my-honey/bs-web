@@ -1,60 +1,101 @@
 import React, { Component } from 'react'
-import { Card, Button } from 'antd'
+import { Col, Row } from 'antd'
 import ReactEcharts from 'echarts-for-react'
+import { songtype, songarea } from '../../services/dashboard';
 
 /*
-后台管理的折线图路由组件
+后台管理的柱状图路由组件
  */
-export default class Line extends Component {
+
+export default class Bar extends Component {
 
   state = {
-    sales: [5, 20, 36, 10, 10, 20], // 销量的数组
-    stores: [6, 10, 25, 20, 15, 10], // 库存的数组
+    type: [], // 歌曲类型的数组
+    area: [], // 歌曲地区的数组
+  }
+  componentDidMount() {
+    songtype().then((res) => {
+      const datatype = Object.values(res.data[0]);
+      this.setState({
+        type: datatype,
+      })
+    })
+    songarea().then((res) => {
+      const dataarea = Object.values(res.data[0]);
+      this.setState({
+        area: dataarea,
+      })
+    })
   }
 
-  update = () => {
-    this.setState(state => ({
-      sales: state.sales.map(sale => sale + 1),
-      stores: state.stores.reduce((pre, store) => {
-        pre.push(store - 1)
-        return pre
-      }, []),
-    }))
-  }
+  // update = () => {
+  //   this.setState(state => ({
+  //     sales: state.sales.map(sale => sale + 1),
+  //     stores: state.stores.reduce((pre, store) => {
+  //       pre.push(store - 1)
+  //       return pre
+  //     }, []),
+  //   }))
+  // }
 
   /*
   返回柱状图的配置对象
    */
-  getOption = (sales, stores) => {
+  getOption = () => {
+
     return {
       title: {
-        text: 'ECharts 入门示例'
+        text: '歌曲类型'
       },
       tooltip: {},
-      legend: {
-        data: ['销量', '库存']
-      },
+      // legend: {
+      //   data: ['销量', '库存']
+      // },
       xAxis: {
-        data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+        data: ["流行", "民谣", "古典", "摇滚", "嘻哈"]
       },
       yAxis: {},
       series: [{
-        name: '销量',
-        type: 'line',
-        data: sales
-      }, {
-        name: '库存',
-        type: 'line',
-        data: stores
+        data: this.state.type,
+        type: 'bar',
+        showBackground: true,
+        backgroundStyle: {
+          color: 'rgba(220, 220, 220, 0.8)'
+        }
+      }]
+    }
+  }
+  getOption2 = () => {
+    return {
+      title: {
+        text: '歌曲地区'
+      },
+      tooltip: {},
+      // legend: {
+      //   data: ['销量', '库存']
+      // },
+      xAxis: {
+        data: ["内地", "港台", "韩国", "欧美", "日本"]
+      },
+      yAxis: {},
+      series: [{
+        data: this.state.area,
+        type: 'bar',
+        showBackground: true,
+        backgroundStyle: {
+          color: 'rgba(220, 220, 220, 0.8)'
+        }
       }]
     }
   }
 
   render() {
-    const { sales, stores } = this.state
     return (
       <div>
-        <ReactEcharts option={this.getOption(sales, stores)} style={{ height: 350 }} />
+        <Row>
+          <Col span={12}><ReactEcharts option={this.getOption()} style={{ height: 380 }} /></Col>
+          <Col span={12}><ReactEcharts option={this.getOption2()} style={{ height: 380 }} /></Col>
+        </Row>
       </div>
     )
   }

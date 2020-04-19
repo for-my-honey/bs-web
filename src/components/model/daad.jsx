@@ -10,8 +10,6 @@ class songModal extends React.Component {
   };
 
   showModal = () => {
-    console.log(this.props.record);
-
     this.setState({
       record: this.props.record,
       visible: true,
@@ -36,7 +34,6 @@ class songModal extends React.Component {
   };
 
   handleCancel = () => {
-    console.log('Clicked cancel button');
     this.setState({
       visible: false,
     });
