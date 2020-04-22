@@ -1,9 +1,12 @@
 import React from 'react';
 import './index.css';
-import { Form, Icon, Input, Button, Checkbox, Card, Carousel } from 'antd';
+import { Form, Icon, Input, Button, Card, Carousel } from 'antd';
 import query from '../../services/login';
 import { message } from 'antd';
 class NormalLoginForm extends React.Component {
+  state = {
+    checked: false,
+  };
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -27,6 +30,13 @@ class NormalLoginForm extends React.Component {
       }
     });
   };
+  onChange = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+    this.setState({
+      checked: !e.target.checked,
+    })
+    console.log(`checked = ${this.state.checked}`);
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -43,7 +53,7 @@ class NormalLoginForm extends React.Component {
           <Form onSubmit={this.handleSubmit} className='loginForm'>
             <Form.Item>
               {getFieldDecorator('username', {
-                rules: [{ required: true, message: 'Please input your username!' }],
+                rules: [{ required: true, message: '请输入你的账号!' }],
               })(
                 <Input
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -53,7 +63,7 @@ class NormalLoginForm extends React.Component {
             </Form.Item>
             <Form.Item>
               {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please input your Password!' }],
+                rules: [{ required: true, message: '请输入密码!' }],
               })(
                 <Input
                   prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -63,15 +73,15 @@ class NormalLoginForm extends React.Component {
               )}
             </Form.Item>
             <Form.Item>
-              {getFieldDecorator('remember', {
+              {/* {getFieldDecorator('remember', {
                 valuePropName: 'checked',
-                initialValue: true,
-              })(<Checkbox>Remember me</Checkbox>)}
+                initialValue: this.state.checked,
+              })(<Checkbox onChange={this.onChange}>记住我</Checkbox>)} */}
               {/* <a className='loginFormForgot' href="">
                 Forgot password
           </a> */}
               <Button type="primary" htmlType="submit" className='loginFormButton'>
-                Log in
+                登录
           </Button>
               {/* Or <a href="">register now!</a> */}
             </Form.Item>

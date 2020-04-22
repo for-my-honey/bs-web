@@ -13,6 +13,9 @@ export async function queryList() {
 export async function select(params) {
   return axios.get(`${songquery}/select?songname=${params}`);
 }
+export async function selectType(params) {
+  return axios.get(`${songquery}/selectType?songtype=${params}`);
+}
 export async function deleat(params) {
   return axios.get(`${songquery}/deleat?id=${params}`);
 }

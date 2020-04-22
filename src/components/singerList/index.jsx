@@ -1,10 +1,10 @@
 import React from 'react';
 import './index.css'
-import { Card, Col, Row, Icon, Modal, Form, message, Upload, InputNumber } from 'antd';
+import { Card, Col, Row, Input, Radio, Icon, Modal, Form, message, Upload, InputNumber } from 'antd';
 
-import { queryList, updatelist } from '../../services/singer';
+import { queryList, updatelist, selectArea, select } from '../../services/singer';
 const { Dragger } = Upload;
-
+const { Search } = Input;
 const { Meta } = Card;
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
@@ -123,7 +123,33 @@ class SingerList extends React.Component {
       this.setState({ record: values });
     });
   };
-
+  onChange = (e) => {
+    this.setState({ loading: true });
+    if (e.target.value === '') {
+      queryList().then((res) => {
+        this.setState({
+          info: res.data,
+          loading: false,
+        })
+      })
+    } else {
+      selectArea(e.target.value).then((res) => {
+        this.setState({
+          info: res.data,
+          loading: false,
+        })
+      })
+    }
+  }
+  onSearch(value) {
+    this.setState({ loading: true });
+    select(value).then((res) => {
+      this.setState({
+        info: res.data,
+        loading: false,
+      })
+    })
+  }
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
@@ -143,6 +169,22 @@ class SingerList extends React.Component {
     return (
       <div>
         <div>
+          <Row>
+            <Col span={8}>
+              <Search placeholder="请输入歌手名称" onSearch={(value) => this.onSearch(value)} enterButton style={{ width: 400, marginBottom: '3px' }} />
+            </Col>
+            <Col span={8}></Col>
+            <Col span={8} style={{ textAlign: 'center' }}>
+              <Radio.Group onChange={this.onChange} defaultValue="" buttonStyle="solid">
+                <Radio.Button value="">全部</Radio.Button>
+                <Radio.Button value="内地">内地</Radio.Button>
+                <Radio.Button value="港台">港台</Radio.Button>
+                <Radio.Button value="韩国">韩国</Radio.Button>
+                <Radio.Button value="欧美">欧美</Radio.Button>
+                <Radio.Button value="日本">日本</Radio.Button>
+              </Radio.Group>
+            </Col>
+          </Row>
           <Row style={{ height: 550 }}>
             {
               data.map((item, j) => {

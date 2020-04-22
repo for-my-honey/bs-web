@@ -1,10 +1,10 @@
 import React from 'react';
 import './index.css'
-import { Card, Col, Row, Icon, Modal, Form, Input, message, Upload } from 'antd';
+import { Card, Col, Row, Icon, Modal, Form, Input, message, Upload, Radio } from 'antd';
 
-import { queryList, updatelist } from '../../services/song';
+import { queryList, updatelist, select, selectType } from '../../services/song';
 const { Dragger } = Upload;
-const { TextArea } = Input;
+const { TextArea, Search } = Input;
 
 const { Meta } = Card;
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
@@ -85,6 +85,16 @@ class SongList extends React.Component {
     this.setState({ visible: false, });
   };
 
+  onSearch(value) {
+    this.setState({ loading: true });
+    select(value).then((res) => {
+      this.setState({
+        info: res.data,
+        loading: false,
+      })
+    })
+  }
+
   handleCreate = () => {
     const { form } = this.formRef.props;
     const { id } = this.state.msg;
@@ -115,7 +125,24 @@ class SongList extends React.Component {
       this.setState({ record: values });
     });
   };
-
+  onChange = (e) => {
+    this.setState({ loading: true });
+    if (e.target.value === '') {
+      queryList().then((res) => {
+        this.setState({
+          info: res.data,
+          loading: false,
+        })
+      })
+    } else {
+      selectType(e.target.value).then((res) => {
+        this.setState({
+          info: res.data,
+          loading: false,
+        })
+      })
+    }
+  }
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
@@ -135,6 +162,22 @@ class SongList extends React.Component {
     return (
       <div>
         <div>
+          <Row>
+            <Col span={8}>
+              <Search placeholder="请输入歌曲名称" onSearch={(value) => this.onSearch(value)} enterButton style={{ width: 400, marginBottom: '3px' }} />
+            </Col>
+            <Col span={8}></Col>
+            <Col span={8} style={{ textAlign: 'center' }}>
+              <Radio.Group onChange={this.onChange} defaultValue="" buttonStyle="solid">
+                <Radio.Button value="">全部</Radio.Button>
+                <Radio.Button value="流行">流行</Radio.Button>
+                <Radio.Button value="民谣">民谣</Radio.Button>
+                <Radio.Button value="古典">古典</Radio.Button>
+                <Radio.Button value="摇滚">摇滚</Radio.Button>
+                <Radio.Button value="嘻哈">嘻哈</Radio.Button>
+              </Radio.Group>
+            </Col>
+          </Row>
           <Row style={{ height: 550 }}>
             {
               data.map((item, j) => {

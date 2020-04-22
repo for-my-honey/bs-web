@@ -13,6 +13,9 @@ export async function query() {
 export async function select(params) {
   return axios.get(`${singerquery}/select?singername=${params}`);
 }
+export async function selectArea(params) {
+  return axios.get(`${singerquery}/selectArea?singerarea=${params}`);
+}
 export async function deleat(params) {
   return axios.get(`${singerquery}/deleat?id=${params}`);
 }
