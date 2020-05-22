@@ -92,6 +92,9 @@ class SongList extends React.Component {
         info: res.data,
         loading: false,
       })
+      if (res.data.length === 0) {
+        message.warning('没有检索到相关歌曲信息！');
+      }
     })
   }
 

@@ -148,6 +148,9 @@ class SingerList extends React.Component {
         info: res.data,
         loading: false,
       })
+      if (res.data.length === 0) {
+        message.warning('没有检索到相关歌手信息！');
+      }
     })
   }
   saveFormRef = formRef => {

@@ -98,6 +98,9 @@ class User extends React.Component {
       this.setState({
         list: res.data
       })
+      if (res.data.length === 0) {
+        message.warning('没有检索到相关用户信息！');
+      }
     })
   }
 
@@ -117,16 +120,10 @@ class User extends React.Component {
   };
 
   render() {
-    const { selectedRowKeys } = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-      hideDefaultSelections: true,
-    };
     return (
       <div>
         <Search placeholder="请输入账户关键字" onSearch={(value) => this.onSearch(value)} enterButton style={{ width: 400, marginBottom: '3px' }} />
-        <Table rowSelection={rowSelection} columns={this.columns} dataSource={this.state.list} rowKey='id' pagination={{ pageSize: 5 }} loading={this.state.loading} />
+        <Table columns={this.columns} dataSource={this.state.list} rowKey='id' pagination={{ pageSize: 5 }} loading={this.state.loading} />
       </div>
     )
   }

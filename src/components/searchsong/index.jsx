@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, Divider, Icon } from 'antd';
+import { Table, Input, Divider, message, Icon } from 'antd';
 import './index.css';
 import { query, select, deleat } from '../../services/song';
 import { formateDate } from '../../utils/dateUtils';
@@ -52,13 +52,15 @@ class Searchsong extends React.Component {
         title: '播放',
         dataIndex: '',
         align: 'center',
-        render: (text, record) => <a href={`http://localhost:3001/public/mp3/${record.songurl}`}><Icon type="step-forward" style={{ fontSize: '18px' }} /></a>
+        render: (text, record) => <a href={`http://localhost:3001/public/mp3/${record.songurl}`}>
+          <Icon type="step-forward" style={{ fontSize: '18px' }} /></a>
       },
       {
         title: '下载',
         dataIndex: '',
         align: 'center',
-        render: (text, record) => <a href={`http://localhost:3001/download?songurl=${record.songurl}`}><Icon type="vertical-align-bottom" style={{ fontSize: '18px' }} /></a>
+        render: (text, record) => <a href={`http://localhost:3001/download?songurl=${record.songurl}`}>
+          <Icon type="vertical-align-bottom" style={{ fontSize: '18px' }} /></a>
       },
       {
         title: '操作',
@@ -105,6 +107,9 @@ class Searchsong extends React.Component {
       this.setState({
         list: res.data
       })
+      if (res.data.length === 0) {
+        message.warning('没有检索到相关歌曲信息！');
+      }
     })
   }
 

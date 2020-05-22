@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, Tooltip, Divider } from 'antd';
+import { Table, Input, Tooltip, message, Divider } from 'antd';
 import './index.css';
 import { query, select, deleat } from '../../services/singer';
 import { formateDate } from '../../utils/dateUtils';
@@ -104,6 +104,9 @@ class Searchsinger extends React.Component {
       this.setState({
         list: res.data
       })
+      if (res.data.length === 0) {
+        message.warning('没有检索到相关歌手信息！');
+      }
     })
   }
 

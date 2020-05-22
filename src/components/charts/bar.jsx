@@ -59,11 +59,11 @@ export default class Line extends Component {
           }
         },
         indicator: [
-          { name: '内地（China）', max: 10 },
-          { name: '港台（Hong Kong and Taiwan）', max: 10 },
-          { name: '韩国（Korea）', max: 10 },
-          { name: '欧美（Europe and America）', max: 10 },
-          { name: '日本（Japan）', max: 10 },
+          { name: '内地（China）', max: 5 },
+          { name: '港台（Hong Kong and Taiwan）', max: 5 },
+          { name: '韩国（Korea）', max: 5 },
+          { name: '欧美（Europe and America）', max: 5 },
+          { name: '日本（Japan）', max: 5 },
         ]
       },
       series: [{
